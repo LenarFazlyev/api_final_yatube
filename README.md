@@ -72,8 +72,9 @@ python manage.py runserver
 }
 
 ...api/v1/posts/
-    * GET - запрос всех постов
-    * POST - создать пост.
+
+    - GET - запрос всех постов
+    - POST - создать пост.
 
 другие примеры можно посмотреть в [Redoc](yatube_api/static/redoc.yaml)
 
