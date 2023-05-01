@@ -2,7 +2,6 @@ from rest_framework import serializers
 from rest_framework.relations import SlugRelatedField
 from rest_framework.validators import UniqueTogetherValidator
 
-
 from posts.models import Comment, Group, Follow, Post, User
 
 
@@ -18,13 +17,11 @@ class CommentSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
         read_only=True, slug_field='username'
     )
-    post = serializers.PrimaryKeyRelatedField(
-        read_only=True
-    )
 
     class Meta:
         fields = '__all__'
         model = Comment
+        read_only_fields = ('post',)
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -36,7 +33,7 @@ class GroupSerializer(serializers.ModelSerializer):
 
 class FollowSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(
-        read_only=True,
+        queryset=User.objects.all(),
         slug_field='username',
         default=serializers.CurrentUserDefault()
     )
@@ -50,8 +47,17 @@ class FollowSerializer(serializers.ModelSerializer):
         fields = ('user', 'following')
         validators = [
             UniqueTogetherValidator(
+                # в итоге убрал read_only=True и пришел
+                # к строке ниже из ошибок при runserver. Удалю.
                 queryset=Follow.objects.all(),
                 fields=('user', 'following'),
                 message='Нельзя войти в воду дважды. Вы уже подписаны'
             ),
         ]
+
+    def validate(self, data):
+        if data['following'] == data['user']:
+            raise serializers.ValidationError(
+                "Нельзя подписаться на самого себя"
+            )
+        return data

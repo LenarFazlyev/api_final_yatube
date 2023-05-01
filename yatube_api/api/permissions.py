@@ -1,6 +1,5 @@
 from rest_framework import permissions
 
-# Зря что-ли столько времени было потрачено )
 MESSAGE: dict = {
     'Post': 'поста',
     'Comment': 'коммента',

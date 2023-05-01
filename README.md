@@ -1,6 +1,20 @@
 # api_final
 
-### :grinning: Made by Lenar :sunglasses::boom:
+## О проекте
+
+Проект позволяет делать запросы к социальной сети Yatube через API.
+С помощью него можно:
+- публиквать записи
+- комментировать записи
+- подписываться на других авторов
+
+## Стек технологий
+
+- Python
+- Django
+- DFR
+- JWT
+- Djoser
 
 ## Как запустить проект:
 
@@ -45,3 +59,8 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+## Документация в формате Redoc:
+[Redoc](yatube_api/static/redoc.yaml)
+
+## Автор:
+ :grinning: Lenar :sunglasses::boom:
