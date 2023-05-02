@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, pagination, mixins
-from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import SearchFilter
 
@@ -50,9 +49,3 @@ class FollowViewSet(mixins.CreateModelMixin,
 
     def get_queryset(self):
         return self.request.user.follower.all()
-
-    def perform_create(self, serializer):
-        following = serializer.validated_data['following']
-        if following == self.request.user:
-            raise ValidationError("Нельзя подписаться на самого себя")
-        serializer.save(user=self.request.user)

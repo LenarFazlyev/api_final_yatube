@@ -47,17 +47,15 @@ class FollowSerializer(serializers.ModelSerializer):
         fields = ('user', 'following')
         validators = [
             UniqueTogetherValidator(
-                # в итоге убрал read_only=True и пришел
-                # к строке ниже из ошибок при runserver. Удалю.
                 queryset=Follow.objects.all(),
                 fields=('user', 'following'),
                 message='Нельзя войти в воду дважды. Вы уже подписаны'
             ),
         ]
 
-    def validate(self, data):
-        if data['following'] == data['user']:
+    def validate_following(self, value):
+        if self.context['request'].user == value:
             raise serializers.ValidationError(
                 "Нельзя подписаться на самого себя"
             )
-        return data
+        return value
